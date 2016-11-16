@@ -14,8 +14,11 @@ public class Utente {
     private String nome;
     private char sexo;
     private Calendar dataNascimento;
-    private int numeroSistemaSaude;
-    private String nomeMedicoFamilia;
+    private String sistemaSaude;
+    private String nomeResponsavelUtente;
+    private String parentescoResponsavel;
+    private String emailResponsavel;
+    private int telefoneResponsavel;
     private String username;
     private String password;
 
