@@ -10,7 +10,7 @@ public class Utente {
     Random gerador = new Random();
     private int numeroProcesso = gerador.nextInt();
     private int numeroUtente;
-    private int numeroIdentificacaoFiscal;
+    private int nif;
     private String nome;
     private char sexo;
     private Calendar dataNascimento;
