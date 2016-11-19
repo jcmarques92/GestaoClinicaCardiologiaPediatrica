@@ -2,7 +2,14 @@ package cardiologiapediatrica;
 
 import util.Consola;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class Main {
+    public static SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+    public static GestaoClinica gc = new GestaoClinica();
 
     public static void main(String[] args) {
         int opcao, opcao2, opcao3, opcao4, opcao5, opcao6, opcao7; //https://www.youtube.com/watch?v=Mr2mPu1tLhk
@@ -14,6 +21,7 @@ public class Main {
                         opcao2 = menuFuncionario();
                         switch (opcao2) {
                             case 1:
+                                inserirFuncionario();
                                 break;
                             case 2:
                                 break;
@@ -229,4 +237,47 @@ public class Main {
         return opcao;
     }
 
+    public static void inserirFuncionario() {
+        int nif, telefone;
+        String nome, morada, email, habilitacoes, funcaoDesempenhada, dataNasc;
+        Calendar dataNascimento = new GregorianCalendar();
+        Servico servico;
+        int numeroS, pos;
+
+        //int numero;
+        //String nome, morada, dataN, dataI;
+        //Calendar dataNasc = new GregorianCalendar();
+        //Calendar dataEntrada = new GregorianCalendar();
+        //Curso curso;
+        //int numeroC, pos;
+        try {
+            nif = Consola.lerInt("Indique o NIF do funcionário: ");
+            telefone = Consola.lerInt("Indique o telefone do funcionário: ");
+            nome = Consola.lerString("Indique o nome do funcionário: ");
+            morada = Consola.lerString("Indique a morada do funcionário: ");
+            email = Consola.lerString("Indique o email do funcionário: ");
+            habilitacoes=Consola.lerString("Indique as habilitações do funcionário: ");
+            funcaoDesempenhada=Consola.lerString("Indique a função desempenhada do funcionário: ");
+            dataNasc = Consola.lerString("Indique a data de nascimento do aluno: ");
+            dataNascimento.setTime(formato.parse(dataNasc));
+
+            do {
+                //gc.mostrarCursos();
+                numeroS = Consola.lerInt("Indique o número do serviço do funcionário: ", 1, 100);
+                pos = gc.pesquisarServico(numeroS);
+                if (pos == -1)
+                    System.out.println("Serviço não existe!");
+            } while (pos == -1);
+
+            servico = gc.obterServico(pos);
+
+            Funcionario f = new Funcionario(nif, nome, dataNascimento, servico, morada, telefone, email, habilitacoes, funcaoDesempenhada);
+
+            gc.adicionarFuncionario(f);
+        } catch (ParseException e) {
+            System.err.println("Erro ao introduzir a data!");
+        }
+
+
+    }
 }
