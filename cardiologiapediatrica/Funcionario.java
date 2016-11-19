@@ -73,5 +73,15 @@ public class Funcionario extends Pessoa{
         this.funcaoDesempenhada = funcaoDesempenhada;
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("\n\tServiço: ").append(servico);
+        str.append("\n\tMorada: ").append(morada);
+        str.append("\n\tTelefone: ").append(telefone);
+        str.append("\n\tEmai: ").append(email);
+        str.append("\n\tHabilitações: ").append(habilitacoes);
+        str.append("\n\tFunção desempenhada: ").append(funcaoDesempenhada);
+        return str.toString();
+    }
 }
