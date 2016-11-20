@@ -51,10 +51,11 @@ public class Utente extends Pessoa {
 
     public String obterSexo(){
         String sexoCompleto="";
-        if (getSexo()=='M')
-            return sexoCompleto="Masculino";
-        else if (getSexo()=='F')
-            return sexoCompleto="Feminino";
+        if (getSexo()=='M') {
+            return sexoCompleto = "Masculino";
+        }else if (getSexo()=='F') {
+            return sexoCompleto = "Feminino";
+        }
         return sexoCompleto;
     }
 
