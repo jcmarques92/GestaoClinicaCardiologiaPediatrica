@@ -21,6 +21,7 @@ public class Main {
                         opcao2 = menuFuncionario();
                         switch (opcao2) {
                             case 1:
+                                inserirFuncionario();
                                 break;
                             case 2:
                                 break;
@@ -246,42 +247,47 @@ public class Main {
         Servico servico;
         int numeroS, pos;
 
-        try {
-            nif = Consola.lerInt("Indique o NIF do funcionário: ");
-            telefone = Consola.lerInt("Indique o telefone do funcionário: ");
-            nome = Consola.lerString("Indique o nome do funcionário: ");
-            morada = Consola.lerString("Indique a morada do funcionário: ");
-            email = Consola.lerString("Indique o email do funcionário: ");
-            habilitacoes=Consola.lerString("Indique as habilitações do funcionário: ");
-            funcaoDesempenhada=Consola.lerString("Indique a função desempenhada do funcionário: ");
-            dataNasc = Consola.lerString("Indique a data de nascimento do funcionário: ");
-            dataNascimento.setTime(formato.parse(dataNasc));
+        if (gc.getTotalFuncionarios()!=0){
+            try {
+                nif = Consola.lerInt("Indique o NIF do funcionário: ");
+                telefone = Consola.lerInt("Indique o telefone do funcionário: ");
+                nome = Consola.lerString("Indique o nome do funcionário: ");
+                morada = Consola.lerString("Indique a morada do funcionário: ");
+                email = Consola.lerString("Indique o email do funcionário: ");
+                habilitacoes=Consola.lerString("Indique as habilitações do funcionário: ");
+                funcaoDesempenhada=Consola.lerString("Indique a função desempenhada do funcionário: ");
+                dataNasc = Consola.lerString("Indique a data de nascimento do funcionário: ");
+                dataNascimento.setTime(formato.parse(dataNasc));
 
-            do {
-                gc.mostrarServico();
-                numeroS = Consola.lerInt("Indique o número do serviço do funcionário: ");
-                pos = gc.pesquisarServico(numeroS);
-                if (pos == -1)
-                    System.out.println("Serviço não existe!");
-            } while (pos == -1);
+                do {
+                    //gc.mostrarServico();
+                    numeroS = Consola.lerInt("Indique o número do serviço do funcionário: ");
+                    pos = gc.pesquisarServico(numeroS);
+                    if (pos == -1)
+                        System.out.println("Serviço não existe!");
+                } while (pos == -1);
 
-            servico = gc.obterServico(pos);
+                servico = gc.obterServico(pos);
 
-            Funcionario f = new Funcionario(nif, nome, dataNascimento, servico, morada, telefone, email, habilitacoes, funcaoDesempenhada);
+                Funcionario f = new Funcionario(nif, nome, dataNascimento, servico, morada, telefone, email, habilitacoes, funcaoDesempenhada);
 
-            gc.adicionarFuncionario(f);
-        } catch (ParseException e) {
-            System.err.println("Erro ao introduzir a data!");
+                gc.adicionarFuncionario(f);
+            } catch (ParseException e) {
+                System.err.println("Erro ao introduzir a data!");
+            }
+        }
+        else {
+            System.out.println("Tem que haver serviços registados!");
+            Consola.sc.nextLine();
         }
     }
 
     public static void inserirUtente(){
         int nif, numeroUtente, telefoneResponsavel;
         String nome, sistemaSaude, nomeResponsavelUtente, parentescoResponsavel, emailResponsavel, nomeMedicoFamilia,
-                username, password, dataNasc;
+                username, password, dataNasc, pass;
         Calendar dataNascimento = new GregorianCalendar();;
         char sexo;
-
         try {
             nif = Consola.lerInt("Indique o número do NIF: ");
             numeroUtente = Consola.lerInt("Indique o número do utente: ");
@@ -292,11 +298,12 @@ public class Main {
             parentescoResponsavel=Consola.lerString("Indique o parentesco do responsável pelo utente: ");
             emailResponsavel=Consola.lerString("Indique o email do responsável pelo utente: ");
             nomeMedicoFamilia=Consola.lerString("Inqique o nome do médico de família do utente: ");
-            username=Consola.lerString("Indique o username do utente: ");
-            password=Consola.lerString("Indique a password do utente: ");
             dataNasc = Consola.lerString("Indique a data de nascimento do utente: ");
             dataNascimento.setTime(formato.parse(dataNasc));
-            sexo=Consola.lerChar("Indique o gênero do utente", "M ou F");
+            sexo=Consola.lerChar("Indique o gênero do utente: ", "M ou F");
+            username=Consola.lerString("Indique o username do utente: ");
+            pass=Consola.lerString("Indique a password do utente: ");
+            password=gc.encrypt(pass);
             Utente u = new Utente(nif, nome, dataNascimento, numeroUtente, sexo, sistemaSaude, nomeResponsavelUtente,
                     parentescoResponsavel, emailResponsavel, telefoneResponsavel, nomeMedicoFamilia, username, password);
             gc.adicionarUtente(u);
@@ -336,6 +343,7 @@ public class Main {
             }
         }
     }
+
 
 
 }

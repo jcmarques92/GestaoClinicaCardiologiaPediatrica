@@ -1,5 +1,6 @@
 package cardiologiapediatrica;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 
 /**
@@ -53,6 +54,20 @@ public class GestaoClinica {
         return utentes.size();
     }
 
+    public String encrypt(String pass){
+        try {
+            MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+            byte[] result = mDigest.digest(pass.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i=0; i <result.length; i++){
+                sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public String consultarFuncionario(){
         StringBuilder str = new StringBuilder();
         if (funcionarios.isEmpty()) {
@@ -77,6 +92,10 @@ public class GestaoClinica {
             }
         }
         return -1;
+    }
+
+    public int getTotalFuncionarios() {
+        return funcionarios.size();
     }
 
     public int pesquisarServico(int numero){
