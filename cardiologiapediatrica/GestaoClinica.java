@@ -11,6 +11,7 @@ public class GestaoClinica {
     ArrayList<Pessoa> pessoas = new ArrayList<>();
     ArrayList<Servico> servicos = new ArrayList<>();
     ArrayList<Utente> utentes = new ArrayList<>();
+    ArrayList<TipoDadoBiomedico> tiposDadosBiomedicos = new ArrayList<>();
 
     public void adicionarFuncionario(Funcionario f){
         funcionarios.add(f);
@@ -26,6 +27,16 @@ public class GestaoClinica {
         }
         utentes.add(u);
         pessoas.add(u);
+    }
+
+    public void adicionarTipoDadoBiomedico(TipoDadoBiomedico tdb){
+        if (tiposDadosBiomedicos.isEmpty()){
+            tdb.setNumero(1);
+        }
+        else {
+            tdb.setNumero(tiposDadosBiomedicos.size()+1);
+        }
+        tiposDadosBiomedicos.add(tdb);
     }
 
     public int pesquisarUtente(int numero) {
@@ -104,6 +115,30 @@ public class GestaoClinica {
     }
 
 
+
+
+
+    public int getTotalTiposDadosBiomedicos() {
+        return tiposDadosBiomedicos.size();
+    }
+
+    public int pesquisarTipoDadoBiomedico(String designacao){
+        for (int i = 0; i < tiposDadosBiomedicos.size(); i++) {
+            if (designacao.equalsIgnoreCase(tiposDadosBiomedicos.get(i).getDescricao())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public TipoDadoBiomedico obterTipoDadoBiomedico(int pos){
+        return tiposDadosBiomedicos.get(pos);
+    }
+
+
+
+
+
     public String mostrarServico(){
         StringBuilder str = new StringBuilder();
         if (servicos.isEmpty()) {
@@ -115,5 +150,10 @@ public class GestaoClinica {
         }
         return str.toString();
     }
+
+
+
+
+
 
 }

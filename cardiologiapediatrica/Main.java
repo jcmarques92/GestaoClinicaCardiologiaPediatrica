@@ -42,8 +42,10 @@ public class Main {
                         opcao3 = menuTiposDados();
                         switch (opcao3){
                             case 1:
+                                inserirTipoDadoBiomédico();
                                 break;
                             case 2:
+                                consultarTipoDadoBiomedico();
                                 break;
                             case 3:
                                 break;
@@ -274,6 +276,7 @@ public class Main {
                 Funcionario f = new Funcionario(nif, nome, dataNascimento, servico, morada, telefone, email, habilitacoes, funcaoDesempenhada);
 
                 gc.adicionarFuncionario(f);
+                System.out.println("Funcionário inserido com sucesso!");
             } catch (ParseException e) {
                 System.err.println("Erro ao introduzir a data!");
             }
@@ -315,6 +318,36 @@ public class Main {
         }
     }
 
+    public static void inserirTipoDadoBiomédico(){
+        String designacao, descricao;
+        try {
+            designacao = Consola.lerString("Indique a designação do tipo de dado biomédico: ");
+            descricao = Consola.lerString("Indique a descrição do tipo de dado biomédico: ");
+            TipoDadoBiomedico tdb = new TipoDadoBiomedico (designacao, descricao);
+            gc.adicionarTipoDadoBiomedico(tdb);
+            System.out.println("Tipo de dado biomédico inserido com sucesso");
+        }catch (RuntimeException e){
+            System.err.println("Erro!");
+        }
+    }
+
+    public static void consultarTipoDadoBiomedico(){
+        String designacao;
+        int pos;
+        if (gc.getTotalTiposDadosBiomedicos() == 0)
+            System.out.println("Ainda não foram inseridos tipos de dados biomédicos!");
+        else {
+            designacao = Consola.lerString("Indique a designação do tipo de dado biomédico: ");
+            pos = gc.pesquisarTipoDadoBiomedico(designacao);
+            if (pos == -1) {
+                System.out.println("Não existe um tipo de dado biomédico com essa designação!");
+            } else {
+                System.out.println(gc.obterTipoDadoBiomedico(pos));
+            }
+        }
+    }
+
+
     public static void inserirUtente(){
         int nif, numeroUtente, telefoneResponsavel;
         String nome, sistemaSaude, nomeResponsavelUtente, parentescoResponsavel, emailResponsavel, nomeMedicoFamilia,
@@ -340,6 +373,7 @@ public class Main {
             Utente u = new Utente(nif, nome, dataNascimento, numeroUtente, sexo, sistemaSaude, nomeResponsavelUtente,
                     parentescoResponsavel, emailResponsavel, telefoneResponsavel, nomeMedicoFamilia, username, password);
             gc.adicionarUtente(u);
+            System.out.println("Utente inserido com sucesso!");
         }catch (ParseException e){
             System.err.println("Erro ao introduzir a data!");
         }
