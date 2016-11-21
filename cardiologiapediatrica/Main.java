@@ -303,7 +303,7 @@ public class Main {
             sexo=Consola.lerChar("Indique o gênero do utente: ", "M ou F");
             username=Consola.lerString("Indique o username do utente: ");
             pass=Consola.lerString("Indique a password do utente: ");
-            password=gc.encrypt(pass);
+            password=gc.encriptar(pass);
             Utente u = new Utente(nif, nome, dataNascimento, numeroUtente, sexo, sistemaSaude, nomeResponsavelUtente,
                     parentescoResponsavel, emailResponsavel, telefoneResponsavel, nomeMedicoFamilia, username, password);
             gc.adicionarUtente(u);

@@ -54,7 +54,7 @@ public class GestaoClinica {
         return utentes.size();
     }
 
-    public String encrypt(String pass){
+    public String encriptar(String pass){
         try {
             MessageDigest mDigest = MessageDigest.getInstance("SHA1");
             byte[] result = mDigest.digest(pass.getBytes());
