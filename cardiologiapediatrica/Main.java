@@ -24,8 +24,10 @@ public class Main {
                                 inserirFuncionario();
                                 break;
                             case 2:
+                                consultarFuncionario();
                                 break;
                             case 3:
+                                eliminarFuncionario();
                                 break;
                             case 0:
                                 System.out.println("Voltar ao menu principal");
@@ -279,6 +281,37 @@ public class Main {
         else {
             System.out.println("Tem que haver serviços registados!");
             Consola.sc.nextLine();
+        }
+    }
+
+    public static void consultarFuncionario(){
+        int numero, pos;
+        if (gc.getTotalFuncionarios() == 0)
+            System.out.println("Ainda não foram inseridos funcionários!");
+        else {
+            numero = Consola.lerInt("Indique o NIF do funcionário: ");
+            pos = gc.pesquisarFuncionario(numero);
+            if (pos == -1) {
+                System.out.println("Não existe um funcionário com esse NIF!");
+            } else {
+                System.out.println(gc.obterFuncionario(pos));
+            }
+        }
+    }
+
+    public static void eliminarFuncionario(){
+        int numero, pos;
+        if (gc.getTotalFuncionarios() == 0)
+            System.out.println("Ainda não foram inseridos funcionários!");
+        else {
+            numero = Consola.lerInt("Indique o NIF do funcionário: ");
+            pos = gc.pesquisarFuncionario(numero);
+            if (pos == -1) {
+                System.out.println("Não existe um funcionário com esse número!");
+            } else {
+                gc.removerFuncionario(pos);
+                System.out.println("Funcionário removido com sucesso!");
+            }
         }
     }
 

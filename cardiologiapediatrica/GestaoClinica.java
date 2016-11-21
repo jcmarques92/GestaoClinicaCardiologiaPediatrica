@@ -68,23 +68,6 @@ public class GestaoClinica {
         }
     }
 
-    public String consultarFuncionario(){
-        StringBuilder str = new StringBuilder();
-        if (funcionarios.isEmpty()) {
-            str.append("Não há funcionários registados!");
-        } else{
-            for (int i=0; i < funcionarios.size(); i++){
-                str.append("Funcionários: ").append(funcionarios.get(i)).append("\n");
-            }
-        }
-        return str.toString();
-    }
-
-    public void eliminarFuncionario(int pos){
-        funcionarios.remove(pos);
-        pessoas.remove(pos);
-    }
-
     public int pesquisarFuncionario(int nif) {
         for (int i = 0; i < funcionarios.size(); i++) {
             if (nif == funcionarios.get(i).getNif()) {
@@ -94,8 +77,17 @@ public class GestaoClinica {
         return -1;
     }
 
+    public Funcionario obterFuncionario(int pos){
+        return funcionarios.get(pos);
+    }
+
     public int getTotalFuncionarios() {
         return funcionarios.size();
+    }
+
+    public void removerFuncionario(int pos){
+        funcionarios.remove(pos);
+        pessoas.remove(pos);
     }
 
     public int pesquisarServico(int numero){
@@ -110,6 +102,7 @@ public class GestaoClinica {
     public Servico obterServico(int pos){
         return servicos.get(pos);
     }
+
 
     public String mostrarServico(){
         StringBuilder str = new StringBuilder();
