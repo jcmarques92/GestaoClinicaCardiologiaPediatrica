@@ -114,10 +114,6 @@ public class GestaoClinica {
         return servicos.get(pos);
     }
 
-
-
-
-
     public int getTotalTiposDadosBiomedicos() {
         return tiposDadosBiomedicos.size();
     }
