@@ -2,7 +2,14 @@ package cardiologiapediatrica;
 
 import util.Consola;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class Main {
+    public static SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+    public static GestaoClinica gc = new GestaoClinica();
 
     public static void main(String[] args) {
         int opcao, opcao2, opcao3, opcao4, opcao5, opcao6, opcao7; //https://www.youtube.com/watch?v=Mr2mPu1tLhk
@@ -14,10 +21,13 @@ public class Main {
                         opcao2 = menuFuncionario();
                         switch (opcao2) {
                             case 1:
+                                inserirFuncionario();
                                 break;
                             case 2:
+                                consultarFuncionario();
                                 break;
                             case 3:
+                                eliminarFuncionario();
                                 break;
                             case 0:
                                 System.out.println("Voltar ao menu principal");
@@ -32,8 +42,10 @@ public class Main {
                         opcao3 = menuTiposDados();
                         switch (opcao3){
                             case 1:
+                                inserirTipoDadoBiomédico();
                                 break;
                             case 2:
+                                consultarTipoDadoBiomedico();
                                 break;
                             case 3:
                                 break;
@@ -54,10 +66,13 @@ public class Main {
                         opcao4 = menuUtente();
                         switch (opcao4){
                             case 1:
+                                inserirUtente();
                                 break;
                             case 2:
+                                consultarUtenteNumero();
                                 break;
                             case 3:
+                                consultarUtenteNomeResponsavel();
                                 break;
                             case 0:
                                 System.out.println("Voltar ao menu principal");
@@ -228,5 +243,174 @@ public class Main {
         opcao = Consola.lerInt("Opcao: ", 0, 6);
         return opcao;
     }
+
+    public static void inserirFuncionario() {
+        int nif, telefone;
+        String nome, morada, email, habilitacoes, funcaoDesempenhada, dataNasc;
+        Calendar dataNascimento = new GregorianCalendar();
+        Servico servico;
+        int numeroS, pos;
+
+        if (gc.getTotalFuncionarios()!=0){
+            try {
+                nif = Consola.lerInt("Indique o NIF do funcionário: ");
+                telefone = Consola.lerInt("Indique o telefone do funcionário: ");
+                nome = Consola.lerString("Indique o nome do funcionário: ");
+                morada = Consola.lerString("Indique a morada do funcionário: ");
+                email = Consola.lerString("Indique o email do funcionário: ");
+                habilitacoes=Consola.lerString("Indique as habilitações do funcionário: ");
+                funcaoDesempenhada=Consola.lerString("Indique a função desempenhada do funcionário: ");
+                dataNasc = Consola.lerString("Indique a data de nascimento do funcionário: ");
+                dataNascimento.setTime(formato.parse(dataNasc));
+
+                do {
+                    //gc.mostrarServico();
+                    numeroS = Consola.lerInt("Indique o número do serviço do funcionário: ");
+                    pos = gc.pesquisarServico(numeroS);
+                    if (pos == -1)
+                        System.out.println("Serviço não existe!");
+                } while (pos == -1);
+
+                servico = gc.obterServico(pos);
+
+                Funcionario f = new Funcionario(nif, nome, dataNascimento, servico, morada, telefone, email, habilitacoes, funcaoDesempenhada);
+
+                gc.adicionarFuncionario(f);
+                System.out.println("Funcionário inserido com sucesso!");
+            } catch (ParseException e) {
+                System.err.println("Erro ao introduzir a data!");
+            }
+        }
+        else {
+            System.out.println("Tem que haver serviços registados!");
+            Consola.sc.nextLine();
+        }
+    }
+
+    public static void consultarFuncionario(){
+        int numero, pos;
+        if (gc.getTotalFuncionarios() == 0)
+            System.out.println("Ainda não foram inseridos funcionários!");
+        else {
+            numero = Consola.lerInt("Indique o NIF do funcionário: ");
+            pos = gc.pesquisarFuncionario(numero);
+            if (pos == -1) {
+                System.out.println("Não existe um funcionário com esse NIF!");
+            } else {
+                System.out.println(gc.obterFuncionario(pos));
+            }
+        }
+    }
+
+    public static void eliminarFuncionario(){
+        int numero, pos;
+        if (gc.getTotalFuncionarios() == 0)
+            System.out.println("Ainda não foram inseridos funcionários!");
+        else {
+            numero = Consola.lerInt("Indique o NIF do funcionário: ");
+            pos = gc.pesquisarFuncionario(numero);
+            if (pos == -1) {
+                System.out.println("Não existe um funcionário com esse número!");
+            } else {
+                gc.removerFuncionario(pos);
+                System.out.println("Funcionário removido com sucesso!");
+            }
+        }
+    }
+
+    public static void inserirTipoDadoBiomédico(){
+        String designacao, descricao;
+        try {
+            designacao = Consola.lerString("Indique a designação do tipo de dado biomédico: ");
+            descricao = Consola.lerString("Indique a descrição do tipo de dado biomédico: ");
+            TipoDadoBiomedico tdb = new TipoDadoBiomedico (designacao, descricao);
+            gc.adicionarTipoDadoBiomedico(tdb);
+            System.out.println("Tipo de dado biomédico inserido com sucesso");
+        }catch (RuntimeException e){
+            System.err.println("Erro!");
+        }
+    }
+
+    public static void consultarTipoDadoBiomedico(){
+        String designacao;
+        int pos;
+        if (gc.getTotalTiposDadosBiomedicos() == 0)
+            System.out.println("Ainda não foram inseridos tipos de dados biomédicos!");
+        else {
+            designacao = Consola.lerString("Indique a designação do tipo de dado biomédico: ");
+            pos = gc.pesquisarTipoDadoBiomedico(designacao);
+            if (pos == -1) {
+                System.out.println("Não existe um tipo de dado biomédico com essa designação!");
+            } else {
+                System.out.println(gc.obterTipoDadoBiomedico(pos));
+            }
+        }
+    }
+
+
+    public static void inserirUtente(){
+        int nif, numeroUtente, telefoneResponsavel;
+        String nome, sistemaSaude, nomeResponsavelUtente, parentescoResponsavel, emailResponsavel, nomeMedicoFamilia,
+                username, password, dataNasc, pass;
+        Calendar dataNascimento = new GregorianCalendar();;
+        char sexo;
+        try {
+            nif = Consola.lerInt("Indique o número do NIF: ");
+            numeroUtente = Consola.lerInt("Indique o número do utente: ");
+            telefoneResponsavel = Consola.lerInt("Indique o telefone do responsável pelo utente: ");
+            nome = Consola.lerString("Indique o nome do utente: ");
+            sistemaSaude=Consola.lerString("Indique o sistema de saúde: ");
+            nomeResponsavelUtente = Consola.lerString("Indique o nome do responsável pelo utente: ");
+            parentescoResponsavel=Consola.lerString("Indique o parentesco do responsável pelo utente: ");
+            emailResponsavel=Consola.lerString("Indique o email do responsável pelo utente: ");
+            nomeMedicoFamilia=Consola.lerString("Inqique o nome do médico de família do utente: ");
+            dataNasc = Consola.lerString("Indique a data de nascimento do utente: ");
+            dataNascimento.setTime(formato.parse(dataNasc));
+            sexo=Consola.lerChar("Indique o gênero do utente: ", "M ou F");
+            username=Consola.lerString("Indique o username do utente: ");
+            pass=Consola.lerString("Indique a password do utente: ");
+            password=gc.encriptar(pass);
+            Utente u = new Utente(nif, nome, dataNascimento, numeroUtente, sexo, sistemaSaude, nomeResponsavelUtente,
+                    parentescoResponsavel, emailResponsavel, telefoneResponsavel, nomeMedicoFamilia, username, password);
+            gc.adicionarUtente(u);
+            System.out.println("Utente inserido com sucesso!");
+        }catch (ParseException e){
+            System.err.println("Erro ao introduzir a data!");
+        }
+    }
+
+    public static void consultarUtenteNumero(){
+        int numero, pos;
+        if (gc.getTotalUtentes() == 0)
+            System.out.println("Ainda não foram inseridos utentes!");
+        else {
+            numero = Consola.lerInt("Indique o número do utente: ", 1, 9999999);
+            pos = gc.pesquisarUtente(numero);
+            if (pos == -1) {
+                System.out.println("Não existe um utente com esse número!");
+            } else {
+                System.out.println(gc.obterUtente(pos));
+            }
+        }
+    }
+
+    public static void consultarUtenteNomeResponsavel(){
+        String nome;
+        int pos;
+        if (gc.getTotalUtentes() == 0)
+            System.out.println("Ainda não foram inseridos utentes!");
+        else {
+
+            nome = Consola.lerString("Indique o nome do utente: ");
+            pos = gc.pesquisarUtente(nome);
+            if (pos == -1) {
+                System.out.println("Não existe um utente com esse nome!");
+            } else {
+                System.out.println(gc.obterUtente(pos));
+            }
+        }
+    }
+
+
 
 }
